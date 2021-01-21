@@ -1,0 +1,9 @@
+${PODS_ROOT}/Target Support Files/Pods-myApp/Pods-myApp-frameworks.sh
+${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework
+${PODS_ROOT}/../../flutter_module/.ios/Flutter/engine/Flutter.framework
+${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
+${BUILT_PRODUCTS_DIR}/Then/Then.framework
+${BUILT_PRODUCTS_DIR}/flutter_boost/flutter_boost.framework
+${PODS_ROOT}/../../flutter_module/.ios/Flutter/App.framework
+${BUILT_PRODUCTS_DIR}/path_provider/path_provider.framework
+${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework
