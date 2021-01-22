@@ -27,9 +27,9 @@ class PlatformRouterImp: NSObject, FLBPlatform {
         vc.setName(url, params: urlParams);
         
         //渲染原生视图
-//        let factory = MyFlutterPlatFormViewFactory()
-//        let registrar = vc.registrar(forPlugin: "platform_text_view_factory")
-//        registrar.register(factory, withId: "platform_text_view")
+        let factory = MyFlutterPlatFormViewFactory()
+        let registrar = vc.registrar(forPlugin: "platform_text_view_factory")
+        registrar?.register(factory, withId: "platform_text_view")
 
         self.navigationController().pushViewController(vc, animated: animated);
         completion(true);
