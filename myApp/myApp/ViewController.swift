@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     let sendEventButton:UIButton = UIButton().then {
         $0.backgroundColor = UIColor.red
         $0 .addTarget(self, action: #selector(clickButton(button:)), for: .touchUpInside)
-        $0.setTitle("sendEventButton", for: .normal)
+        $0.setTitle("pushSearchPage", for: .normal)
         $0.tag = 2
     }
     let pushButton:UIButton = {
@@ -105,7 +105,11 @@ class ViewController: UIViewController {
                 print(String(format:"page is presented"));
             }
         case 2:
-            FlutterBoostPlugin.sharedInstance().sendEvent("native-flutter", arguments: ["code":"200","message":"nativie sendEvent to flutter"])
+            FlutterBoostPlugin.open("/SearchPage", urlParams:[kPageCallBackId:"MycallbackId#3"], exts: ["animated":true], onPageFinished: { (_ result:Any?) in
+                print(String(format:"call me when page finished, and your result is:%@", result as! CVarArg));
+            }) { (f:Bool) in
+                print(String(format:"page is opened"));
+            }
             
         default:
             print("错误")

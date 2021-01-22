@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
     ScreenUtil.init(context, width: 750, height: 1334);
     return NestedScrollView(
         floatHeaderSlivers: true,
-        physics: BouncingScrollPhysics(),
         headerSliverBuilder: (context,innerBoxIsScrolled)=>[
           customAppBar(),
           banner(),
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
                   // border: Border.all(color: Colors.black26),
                   color: Colors.white
               ),
-              margin: EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 15),
+              margin: EdgeInsets.symmetric(vertical: 8,horizontal: 15),
               child: Row(
                 children: <Widget>[
                   Container(
@@ -143,7 +142,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
               Navigator.of(context).pushNamed(HomeDetailsPage.routeName);
             },
           ),
-          appBarColor: Colors.red,
+          appBarColor: Colors.pink,
           flexibleSpace: CachedNetworkImage(imageUrl: imageUrl,fit: BoxFit.cover),
           expandedHeight: 150,
           collapsedHeight: 44,
@@ -220,8 +219,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
           ),
         )
     );
-
-
 
 }
 
@@ -330,7 +327,6 @@ class SliverCustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-
     final int alpha = (shrinkOffset / (this.maxExtent - this.minExtent) * 255).clamp(0, 255).toInt();
     return Container(
       width: ScreenUtil.screenWidth,
@@ -347,11 +343,10 @@ class SliverCustomTabBarDelegate extends SliverPersistentHeaderDelegate {
             height: this.minExtent,
             child: Container(
               color:makeAppBarColor(shrinkOffset),
-              child:SafeArea(
-                child: Opacity(
-                  child:this.appBar,
-                  opacity:alpha/255,
-                ),
+              padding: EdgeInsets.only(top:ScreenUtil.statusBarHeight),
+              child:Opacity(
+                child:this.appBar,
+                opacity:alpha/255,
               ),
             ),
           ),
