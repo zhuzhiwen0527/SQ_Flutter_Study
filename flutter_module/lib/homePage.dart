@@ -1,19 +1,19 @@
 
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
-
+import 'package:flutter/services.dart';
 import 'package:flutter_boost/flutter_boost.dart';
 import 'package:flutter_module/homeDetailsPage.dart';
 import 'package:flutter_module/homePageViewModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'homeDetailsPage.dart';
 
 class HomePage extends StatefulWidget {
   static final routeName = "/Home";
@@ -23,29 +23,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,SingleTickerProviderStateMixin{
   HomePageViewModel viewModel = HomePageViewModel();
   TabController _tabController; //需要定义一个Controller
-  ScrollController _scrollController;
-  ScrollController _waterScrollController;
-  List tabs = ["1","2","3","4"];
-  bool isRefresh = false;
+  List tabs = ["0","1","2","3"];
   @override
   void initState() {
-
     super.initState();
     viewModel.requsetBannerList();
     _tabController = TabController(length: tabs.length, vsync: this);
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-
-      if (_scrollController.offset >= 196){
-        setState(() {
-          isRefresh = true;
-        });
-      }
-      _waterScrollController = ScrollController();
-      _waterScrollController.addListener(() {
-        print("_waterScrollController ${_waterScrollController.offset}");
-      });
-    });
   }
   @override
   void deactivate() {
@@ -72,37 +55,24 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
 
   Widget createCustomScrollView(){
 // debugPaintSizeEnabled = true;
-
     ScreenUtil.init(context, width: 750, height: 1334);
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        customAppBar(),
-        banner(),
-        // listView(),
-        // gridView(6),
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: SliverTabBarDelegate(
-              TabBar(
-                controller: _tabController,
-                tabs: tabs.map((e) => Tab(text: e)).toList(),
-                indicatorColor: Colors.red,
-                unselectedLabelColor: Colors.black,
-                labelColor: Colors.white,
-              ),
-              color: Colors.red
-          ),
-        ),
-      SliverFillRemaining(
-        child: TabBarView(
-          controller: _tabController,
-          children: tabs.map((e) { //创建Tab页
-            return customWaterFolw(e);
-          }).toList(),
-        ),
-      ),
-      ],
+    return NestedScrollView(
+        floatHeaderSlivers: true,
+        physics: BouncingScrollPhysics(),
+        headerSliverBuilder: (context,innerBoxIsScrolled)=>[
+          customAppBar(),
+          banner(),
+          gridView(4),
+        ],
+        pinnedHeaderSliverHeightBuilder: (){
+          return  44 + ScreenUtil.statusBarHeight;
+        },
+        innerScrollPositionKeyBuilder: (){
+          String index = 'Tab';
+          index += _tabController.index.toString();
+          return  Key(index);
+        },
+        body: bodyView()
     );
   }
 
@@ -148,14 +118,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
 
     return SliverPersistentHeader(
         delegate: SliverCustomTabBarDelegate(
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                // border: Border.all(color: Colors.black26),
-                color: Colors.white
-            ),
-           margin: EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 15),
-            child: GestureDetector(
+          GestureDetector(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  // border: Border.all(color: Colors.black26),
+                  color: Colors.white
+              ),
+              margin: EdgeInsets.only(left: 15,top: 8,bottom: 8,right: 15),
               child: Row(
                 children: <Widget>[
                   Container(
@@ -168,10 +138,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
                   ),
                 ],
               ),
-              onTap: (){
-
-              },
             ),
+            onTap: (){
+              Navigator.of(context).pushNamed(HomeDetailsPage.routeName);
+            },
           ),
           appBarColor: Colors.red,
           flexibleSpace: CachedNetworkImage(imageUrl: imageUrl,fit: BoxFit.cover),
@@ -225,32 +195,35 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
   }
 
   Widget customWaterFolw(String e){
+    String index = 'Tab' +  e;
+    final key =  Key(index);
+    return NestedScrollViewInnerScrollPositionKeyWidget(
+        key,
+        WaterfallFlow(
+          key:PageStorageKey<String>(e),
+          children: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((int e){
+            return Container(
+              height:  Random().nextInt(300).toDouble()+40,
+              color: Colors.red,
+              child: Text("$e"),
+            );
+          }).toList(),
+          physics:  NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.all(10),
+          gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+            crossAxisCount:2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            lastChildLayoutTypeBuilder: (index){
+              return LastChildLayoutType.none;
+            },
+          ),
+        )
+    );
 
-    return Builder(builder: (context){
-      return WaterfallFlow(
-        controller: _waterScrollController,
-        key:PageStorageKey<String>(e),
-        children: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map((int e){
-          return Container(
-            height:  Random().nextInt(300).toDouble()+40,
-            color: Colors.red,
-            child: Text("$e"),
-          );
-        }).toList(),
-        physics:  isRefresh ? BouncingScrollPhysics():NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(10),
-        gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-          crossAxisCount:2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          lastChildLayoutTypeBuilder: (index){
-            return LastChildLayoutType.none;
-          },
-        ),
-      );
-    });
 
-  }
+
+}
 
   Widget waterFlow(){
     return SliverWaterfallFlow(
@@ -314,35 +287,31 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
     );
 
   }
-}
 
-class SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar widget;
-  final Color color;
+  Widget bodyView(){
 
-  const SliverTabBarDelegate(this.widget, {this.color})
-      : assert(widget != null);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      child: widget,
-      color: color,
+    return Column(
+      children: [
+        TabBar(
+          controller: _tabController,
+          tabs: tabs.map((e) => Tab(text: e)).toList(),
+          indicatorColor: Colors.red,
+          unselectedLabelColor: Colors.black,
+          labelColor: Colors.red,
+        ),
+        Expanded(
+          child: TabBarView(
+              controller: _tabController,
+              children: tabs.map((e) { //创建Tab页
+                return customWaterFolw(e);
+              }).toList()
+          ),
+        ),
+      ],
     );
   }
-
-  @override
-  bool shouldRebuild(SliverTabBarDelegate oldDelegate) {
-    return false;
-  }
-
-  @override
-  double get maxExtent => widget.preferredSize.height;
-
-  @override
-  double get minExtent => widget.preferredSize.height;
 }
+
 
 class SliverCustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget appBar;
@@ -366,7 +335,7 @@ class SliverCustomTabBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       width: ScreenUtil.screenWidth,
       height: this.expandedHeight,
-      color: Colors.cyan,
+      color: Colors.blue,
       child: Stack(
         fit: StackFit.expand,
         children: [

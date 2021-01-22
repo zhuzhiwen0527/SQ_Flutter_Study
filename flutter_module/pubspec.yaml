@@ -36,7 +36,7 @@ dependencies:
   flutter_screenutil: ^2.1.0
   extended_nested_scroll_view: ^2.0.1
   pull_to_refresh: ^1.6.3
-#  get: ^3.24.0
+  get: ^3.24.0
   flutter_boost:
     git:
       url: 'https://github.com/alibaba/flutter_boost.git'
