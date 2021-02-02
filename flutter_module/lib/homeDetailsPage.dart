@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class HomeDetailsPage extends StatefulWidget{
-  static final routeName = "/HomeDetailsPage";
+
 
   _homeDetailsState createState() => _homeDetailsState();
 }

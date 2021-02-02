@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_boost/flutter_boost.dart';
 
 class  SearchPage extends StatefulWidget{
-  static final routeName = "/SearchPage";
   _searchPageState createState()=>_searchPageState();
 }
 

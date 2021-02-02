@@ -8,15 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_boost/flutter_boost.dart';
 import 'package:flutter_module/homeDetailsPage.dart';
 import 'package:flutter_module/homePageViewModel.dart';
+import 'package:flutter_module/router/Router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'homeDetailsPage.dart';
 
 class HomePage extends StatefulWidget {
-  static final routeName = "/Home";
+
   _HomePageState createState() => _HomePageState();
 }
 
@@ -41,7 +43,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
       "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2453876778,4252200680&fm=26&gp=0.jpg";
   @override
   Widget build(BuildContext context) {
+setState(() {
 
+});
     return Scaffold(
       body:ChangeNotifierProvider.value(
         value: viewModel,
@@ -139,7 +143,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
               ),
             ),
             onTap: (){
-              Navigator.of(context).pushNamed(HomeDetailsPage.routeName);
+              print("getx -> router");
+              Get.toNamed(ZWRouter.homeDetailsRoute);
+
             },
           ),
           appBarColor: Colors.pink,

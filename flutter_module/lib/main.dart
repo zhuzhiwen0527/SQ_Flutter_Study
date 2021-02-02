@@ -6,6 +6,7 @@ import 'package:flutter_boost/flutter_boost.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 void main() => runApp(BoostApp());
 
 class BoostApp extends StatefulWidget {
@@ -17,29 +18,23 @@ class _BoostAppState extends State<BoostApp> {
   @override
   void initState() {
     super.initState();
-
-    FlutterBoost.singleton.channel.addEventListener("native-flutter", (name, arguments) {
-      print(name);
-      if(arguments["message"] == "nativie sendEvent to flutter"){
-        String code =  arguments["code"];
-        print("code = $code");
-      }
-      print(arguments);
-    });
+    
     FlutterBoost.singleton.registerPageBuilders(ZWRouter.boostRoutes);
-
   }
 
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      title: 'Flutter Boost example',
-      builder: FlutterBoost.init(postPush: _onRoutePushed),
+      builder: FlutterBoost.init(),
       routes: ZWRouter.routes,
-      home: BottomNavigationPage(),
+      home:GetMaterialApp(
+        home: BottomNavigationPage(),
+        getPages: ZWRouter.GetRoutes,
+      )
     );
-  }
+
+}
 
   void _onRoutePushed(pageName,uniqueId,params,route,result){
 
