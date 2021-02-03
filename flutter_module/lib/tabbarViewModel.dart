@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_module/Mine.dart';
+import 'package:flutter_module/mine.dart';
 import 'package:flutter_module/homePage.dart';
 
 class TabbarViewModel extends ChangeNotifier{

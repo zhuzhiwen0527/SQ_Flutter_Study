@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_module/HttpRequest.dart';
+import 'package:flutter_module/httpRequest.dart';
 
 class HomePageViewModel extends ChangeNotifier{
 

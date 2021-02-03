@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boost/container/boost_page_route.dart';
 import 'package:flutter_module/homeDetailsPage.dart';
 import 'package:flutter_module/homePage.dart';
+import 'package:flutter_module/login/loginBinding.dart';
+import 'package:flutter_module/login/loginView.dart';
 import 'package:flutter_module/searchPage.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,8 @@ class ZWRouter {
   static final homeRoute = "/Home";
   static final homeDetailsRoute = "/HomeDetailsPage";
   static final searchRoute = "/SearchPage";
+  static final loginRoute = "/loginPage";
+
   static final Map<String,PageBuilder> boostRoutes = {
     homeRoute:(pageName,params,uniqueId)=>GetMaterialApp(home: HomePage(),getPages: GetRoutes,),
     homeDetailsRoute:(pageName,params,uniqueId)=>GetMaterialApp(home: HomeDetailsPage(),getPages: GetRoutes),
@@ -22,6 +26,7 @@ class ZWRouter {
     GetPage(name: homeRoute, page: ()=>HomePage()),
     GetPage(name: homeDetailsRoute, page: ()=>HomeDetailsPage()),
     GetPage(name: searchRoute, page: ()=>SearchPage()),
+    GetPage(name: loginRoute, page:()=> LoginView(),binding: LoginBinding()),
   ];
 
   static final Map<String,WidgetBuilder> routes = {
